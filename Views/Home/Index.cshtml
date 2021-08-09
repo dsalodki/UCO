@@ -1,0 +1,88 @@
+﻿@model IEnumerable<UCO.Data.SomeTestClass>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My ASP.NET Application</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>What you need to do?</h3>
+                <ul>
+                    <li>Show Table of item 2 and 3.</li>
+                    <li>Show button. On button click display items 4 and 5 using ajax (whith no page refresh).</li>
+                </ul>
+
+                <table>
+                    @foreach (var data in Model)
+                    {
+                        <tr>
+                            <td>@data.ID</td>
+                            <td>@data.Title</td>
+                            <td>@data.Data1</td>
+                            <td>@data.Data2</td>
+                            <td>@data.Data3</td>
+                            <td>@data.Data4</td>
+                            <td>@data.OtherTypeValue.ID</td>
+                            <td>@data.OtherTypeValue.Title</td>
+                        </tr>
+                    }
+                </table>
+
+                <button onclick="loadData()">Load data by ajax</button>
+
+                <table id="tblData"></table>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+    function loadData() {
+        $.ajax({
+            url: '@Url.Action("Data", "Home")',
+            success: function(data) {
+                debugger;
+                for (var i = 0; i < data.length; i++) {
+                    var tr = $('<tr></tr>');
+                    var td = $('<td></td>');
+                    var item = data[i];
+                    // id
+                    appendTd(item.id, tr);
+                    // title
+                    appendTd(item.title, tr);
+                    // data1
+                    appendTd(item.data1, tr);
+                    // data2
+                    appendTd(item.data2, tr);
+                    // data3
+                    appendTd(item.data3, tr);
+                    // data4
+                    appendTd(item.data4, tr);
+                    // OtherTypeValue.ID
+                    appendTd(item.otherTypeValue.id, tr);
+                    // OtherTypeValue.Title
+                    appendTd(item.otherTypeValue.title, tr);
+
+                    $('#tblData').append(tr);
+                }
+            }
+        });
+        }
+
+    function appendTd(text, tr) {
+        var td = $('<td></td>');
+        td.text(text);
+        tr.append(td);
+    }
+    </script>
+</body>
+</html>
